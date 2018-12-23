@@ -1,7 +1,7 @@
 <template>
   <el-container style="height: 100%;">
     <!-- 侧边栏 -->
-    <el-aside class="app-aside">
+    <el-aside class="app-aside" style="width: 250px">
       <h1>拜尔科技管理后台</h1>
       <el-menu :default-active="pagedefault" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" unique-opened router background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
         <el-menu-item index="/">
@@ -137,7 +137,6 @@ export default {
   },
   methods: {
     onLogOut () {
-      console.log(31321312)
       this.$router.push('/login')
     },
 

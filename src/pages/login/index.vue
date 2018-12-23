@@ -9,7 +9,7 @@
       <el-input placeholder="请输入密码" v-model="password">
         <i slot="prefix" class="el-input__icon el-icon-view"></i>
       </el-input>
-      <el-button type="success" @click="onLogin">登录</el-button>
+      <el-button type="success" @click="onLogin" class="login">登录</el-button>
     </div>
   </el-main>
 </template>
@@ -56,8 +56,8 @@ export default {
   background: url('../../assets/img/login_bg.jpg') no-repeat center center;
 }
 .container {
-  width: 40%;
-  margin:10% auto;
+  width: 30%;
+  margin:5% auto;
   text-align: center;
 }
 .avatar {
@@ -73,7 +73,7 @@ export default {
   display: block;
   margin-bottom: 30px;
 }
-.el-button {
+.login {
   width: 100%;
   font-size: 20px;
 }
