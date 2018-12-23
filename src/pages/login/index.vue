@@ -3,10 +3,10 @@
     <div class="container">
       <img src="../../assets/img/icon.jpg" alt="" class="avatar">
       <h1>拜尔科技商品管理系统</h1>
-      <el-input placeholder="请输入手机号" v-model="user">
+      <el-input placeholder="请输入手机号" v-model="user" class="input-login">
         <i slot="prefix" class="el-input__icon el-icon-phone-outline"></i>
       </el-input>
-      <el-input placeholder="请输入密码" v-model="password">
+      <el-input placeholder="请输入密码" v-model="password"  class="input-login">
         <i slot="prefix" class="el-input__icon el-icon-view"></i>
       </el-input>
       <el-button type="success" @click="onLogin" class="login">登录</el-button>
@@ -68,7 +68,7 @@ export default {
 .container h1 {
   color: #fff;
 }
-.el-input {
+.input-login {
   width: 100%;
   display: block;
   margin-bottom: 30px;
