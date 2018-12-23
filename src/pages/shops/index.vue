@@ -12,12 +12,10 @@
       :btns="abtns"
       :total="totalPage"
       :current="oParams.pageNo"
-      @on-page="onChangePage">
+      :onAdd="true"
+      @on-page="onChangePage"
+      @on-add="onAddList">
     </w-table-list>
-      <!-- 新增按钮 -->
-      <div>
-        <el-button size="small" type="primary" @click="onAdd" class="add-page">新增</el-button>
-      </div>
   </div>
 </template>
 
@@ -27,11 +25,10 @@ export default {
     return {
       siftParams: [
         {
-          name: 'phone',
+          name: 'name',
           value: '',
           inputLength: 30,
-          filterType: 'number',
-          holder: '完整手机号'
+          holder: '商品名称'
         }, {
           name: 'phone',
           type: 'datetimerange',
@@ -84,7 +81,7 @@ export default {
     onChangePage () {
       console.log(32111)
     },
-    onAdd () {
+    onAddList () {
       console.log(3212213)
     }
   }
@@ -98,9 +95,9 @@ export default {
     padding: 10px;
     box-sizing: border-box;
   }
-  .add-page {
+  /* .add-page {
     position: fixed;
     top: 160px;
     right: 50px;
-  }
+  } */
 </style>

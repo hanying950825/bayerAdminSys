@@ -2,6 +2,7 @@
   <el-card class="m-table-list" :dis-hover="true">
     <div slot="header" class="clearfix">
       <p slot="title" class="title">{{title}}</p>
+      <el-button size="small" type="primary" @click="onAdd" class="add-page" style="float: right" v-if="onAdd" v-bind:click="onAddList">新增</el-button>
     </div>
     <el-table border :data="datas">
       <el-table-column v-for="(item, index) in columns" :prop="item.key" :label="item.title" :key="index">
@@ -19,7 +20,8 @@ export default {
     btns: Array,
     tbody: Array,
     total: Number,
-    current: Number
+    current: Number,
+    onAdd: Boolean
   },
   data () {
     return {
@@ -82,6 +84,10 @@ export default {
     },
     onChange (page) {
       this.$emit('on-page', page)
+    },
+
+    onAddList () {
+      this.$emit('on-add')
     }
   },
   watch: {

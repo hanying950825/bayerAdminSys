@@ -3,7 +3,7 @@
     <!-- 侧边栏 -->
     <el-aside class="app-aside" style="width: 250px">
       <h1>拜尔科技管理后台</h1>
-      <el-menu :default-active="pagedefault" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" unique-opened router background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+      <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" unique-opened router background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
         <el-menu-item index="/">
           <i class="el-icon-menu"></i>
           <span slot="title">首页</span>
@@ -113,7 +113,6 @@ export default {
     return {
       userName: 'admin',
       isShowModel: false,
-      pagedefault: '/',
       ruleForm: {
         pass: '',
         newPass: '',
