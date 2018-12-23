@@ -4,7 +4,11 @@
     <el-aside class="app-aside">
       <h1>拜尔科技管理后台</h1>
       <el-menu :default-active="pagedefault" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" unique-opened router background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-        <el-submenu index="1">
+        <el-menu-item index="/">
+          <i class="el-icon-menu"></i>
+          <span slot="title">首页</span>
+        </el-menu-item>
+        <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-goods"></i>
             <span>商品</span>
@@ -12,14 +16,14 @@
           <el-menu-item index="/shops">商品管理</el-menu-item>
           <el-menu-item index="1-2">分类管理</el-menu-item>
         </el-submenu>
-        <el-submenu index="2">
+        <el-submenu index="3">
           <template slot="title">
             <i class="el-icon-mobile-phone"></i>
             <span slot="title">广告</span>
           </template>
           <el-menu-item index="2-1">广告管理</el-menu-item>
         </el-submenu>
-        <el-submenu index="3">
+        <el-submenu index="4">
           <template slot="title">
             <i class="el-icon-mobile-phone"></i>
             <span slot="title">推荐</span>
@@ -27,7 +31,7 @@
           <el-menu-item index="3-1">推荐管理</el-menu-item>
           <el-menu-item index="3-2">热销管理</el-menu-item>
         </el-submenu>
-        <el-submenu index="4">
+        <el-submenu index="5">
           <template slot="title">
             <i class="el-icon-tickets"></i>
             <span slot="title">订单</span>
@@ -36,7 +40,7 @@
           <el-menu-item index="4-2">退款退货</el-menu-item>
           <el-menu-item index="4-3">发货管理</el-menu-item>
         </el-submenu>
-        <el-submenu index="5">
+        <el-submenu index="6">
           <template slot="title">
             <i class="el-icon-phone-outline"></i>
             <span slot="title">用户</span>
