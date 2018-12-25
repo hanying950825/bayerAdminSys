@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="siftForm" @submit.native.prevent="onSubmit" inline class="m-sift-form">
+  <el-form ref="siftForm" inline class="m-sift-form">
     <slot></slot>
     <el-form-item v-for="(item, index) in options" :key="index">
       <!-- 时间选择 -->
@@ -25,7 +25,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onReset">清空</el-button>
-      <el-button type="primary" html-type="submit" :disabled="abledSearch">搜索</el-button>
+      <el-button type="primary" html-type="submit" :disabled="abledSearch" @click.native.prevent="onSubmit">搜索</el-button>
     </el-form-item>
   </el-form>
 </template>

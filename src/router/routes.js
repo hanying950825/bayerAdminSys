@@ -11,6 +11,11 @@ export const normalFirstRoutes = [
     path: '/shops',
     meta: { name: '商品管理' },
     component: resolve => require(['../pages/shops'], resolve)
+  },
+  {
+    path: '/classify',
+    meta: { name: '分类管理' },
+    component: resolve => require(['../pages/classify'], resolve)
   }
 ]
 
