@@ -6,15 +6,15 @@
       @on-submit="onSearchSubmit">
     </w-sift-form>
     <!-- 列表主体 -->
-    <w-table-list title="商品列表"
-      :thead="thead"
+    <w-table-list
+      title="商品列表"
       :tbody="tbody"
-      :btns="abtns"
+      :thead="thead"
       :total="totalPage"
       :current="oParams.pageNo"
-      :onAdd="true"
-      @on-page="onChangePage"
-      @on-add="onAddList">
+      :isShowOperation="true"
+      :btns="abtns"
+      :onAdd="true">
     </w-table-list>
   </div>
 </template>
@@ -92,13 +92,16 @@ export default {
         {
           title: '删除',
           target: this,
-          click (target, params) {
-
+          click: function (target, params) {
+            console.log(321213)
           }
         }
       ],
       totalPage: 10,
-      oParams: {}
+      oParams: {
+        pageSize: 10,
+        pageNo: 1
+      }
     }
   },
   methods: {

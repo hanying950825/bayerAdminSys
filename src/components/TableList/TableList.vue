@@ -7,8 +7,20 @@
     <el-table border :data="datas">
       <el-table-column v-for="(item, index) in columns" :prop="item.key" :label="item.title" :key="index">
       </el-table-column>
+      <el-table-column prop="operation" label="操作" v-if="isShowOperation">
+        <template slot-scope="scope">
+        <el-button
+          v-for="(item, index) in btns"
+          :key="index"
+          @click.native.prevent="item.click"
+          type="text"
+          size="small">
+          {{item.title}}
+        </el-button>
+      </template>
+    </el-table-column>
     </el-table>
-    <el-pagination v-if="total" :total="total" :current="current" @on-change="onChange" show-elevator show-total></el-pagination>
+    <el-pagination v-if="total" :total="total" :current="current" @on-change="onChange" show-elevator show-total class="pagination"></el-pagination>
   </el-card>
 </template>
 
@@ -21,7 +33,8 @@ export default {
     tbody: Array,
     total: Number,
     current: Number,
-    onAdd: Boolean
+    onAdd: Boolean,
+    isShowOperation: Boolean
   },
   data () {
     return {
@@ -36,45 +49,7 @@ export default {
   },
   methods: {
     _handleOperate () {
-      this.aBtns = this.$store.getters.privilege === 0 ? (this.btns || []).filter(item => item.exist) : this.btns
-      if (this.aBtns && this.aBtns.length) {
-        const btnWidth = this.aBtns.map(item => item.title).join('').length * 30
-        const oBtn = {
-          title: '操作',
-          key: 'action',
-          width: btnWidth,
-          align: 'center',
-          render: (h, {row, column, $index}) => {
-            return h('div', this._createBtns(h, row))
-          }
-        }
-        this.columns = [...this.thead, oBtn]
-      } else {
-        this.columns = this.thead
-      }
-    },
-    _createBtns (h, params) {
-      return this.btns.map((item, index) => {
-        return (
-          h('el-button', {
-            props: {
-              type: item.title === '删除' ? 'error' : 'primary',
-              size: 'small'
-            },
-            style: {
-              marginRight: '5px'
-            },
-            on: {
-              click: () => {
-                if (item.title === '删除') {
-                  return
-                }
-                item.click && item.click(item.target, params)
-              }
-            }
-          }, item.title)
-        )
-      })
+      this.columns = this.thead
     },
     onChange (page) {
       this.$emit('on-page', page)
@@ -98,5 +73,8 @@ export default {
 <style>
 .title {
   display: inline-block;
+}
+.pagination {
+  margin-top: 10px;
 }
 </style>
