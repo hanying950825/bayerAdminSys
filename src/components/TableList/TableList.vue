@@ -36,6 +36,7 @@ export default {
   },
   methods: {
     _handleOperate () {
+      this.aBtns = this.$store.getters.privilege === 0 ? (this.btns || []).filter(item => item.exist) : this.btns
       if (this.aBtns && this.aBtns.length) {
         const btnWidth = this.aBtns.map(item => item.title).join('').length * 30
         const oBtn = {
@@ -43,8 +44,8 @@ export default {
           key: 'action',
           width: btnWidth,
           align: 'center',
-          render: (h, params) => {
-            return h('div', this._createBtns(h, params.row))
+          render: (h, {row, column, $index}) => {
+            return h('div', this._createBtns(h, row))
           }
         }
         this.columns = [...this.thead, oBtn]
@@ -53,9 +54,9 @@ export default {
       }
     },
     _createBtns (h, params) {
-      return this.aBtns.map((item, index) => {
+      return this.btns.map((item, index) => {
         return (
-          h('Button', {
+          h('el-button', {
             props: {
               type: item.title === '删除' ? 'error' : 'primary',
               size: 'small'
@@ -66,13 +67,6 @@ export default {
             on: {
               click: () => {
                 if (item.title === '删除') {
-                  this.$Modal.confirm({
-                    title: '提示',
-                    content: '是否确认删除',
-                    onOk: () => {
-                      item.click && item.click(item.target, params)
-                    }
-                  })
                   return
                 }
                 item.click && item.click(item.target, params)

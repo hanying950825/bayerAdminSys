@@ -68,8 +68,35 @@ export default {
           key: 'stock'
         }
       ],
-      tbody: [],
-      abtns: [],
+      tbody: [
+        {
+          index: 1,
+          name: 3211,
+          size: 1321,
+          price: 100,
+          topCategory: 12213,
+          secondCategory: 312,
+          stock: 111
+        },
+        {
+          index: 1,
+          name: 3211,
+          size: 1321,
+          price: 100,
+          topCategory: 12213,
+          secondCategory: 312,
+          stock: 111
+        }
+      ],
+      abtns: [
+        {
+          title: '删除',
+          target: this,
+          click (target, params) {
+
+          }
+        }
+      ],
       totalPage: 10,
       oParams: {}
     }

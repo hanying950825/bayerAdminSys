@@ -1,8 +1,9 @@
-import { storage } from 'util/storage'
+import { storage } from './../utils/storage'
 
 export default {
   state: {
     userInfo: storage.get('userInfo') || {},
+    privilege: 1,
     isMask: false
   },
   getters: {
@@ -10,7 +11,8 @@ export default {
     userId: state => state.userInfo.userId,
     uerType: state => state.userInfo.uerType,
     userName: state => state.userInfo.userName,
-    isMask: state => state.isMask
+    isMask: state => state.isMask,
+    privilege: state => state.privilege
   },
   actions: {
 
