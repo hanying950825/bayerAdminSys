@@ -14,7 +14,10 @@
       :current="oParams.pageNo"
       :isShowOperation="true"
       :btns="abtns"
-      :onAdd="true">
+      :onAdd="true"
+      @on-delete="onDeleteShops"
+      @on-click="onEditShops"
+      @on-look="onLookShops">
     </w-table-list>
   </div>
 </template>
@@ -90,11 +93,13 @@ export default {
       ],
       abtns: [
         {
-          title: '删除',
-          target: this,
-          click: function (target, params) {
-            console.log(321213)
-          }
+          title: '编辑'
+        },
+        {
+          title: '查看'
+        },
+        {
+          title: '删除'
         }
       ],
       totalPage: 10,
@@ -113,7 +118,12 @@ export default {
     },
     onAddList () {
       console.log(3212213)
-    }
+    },
+    onDeleteShops (row) {
+      console.log(row)
+    },
+    onEditShops (row) {},
+    onLookShops (row) {}
   }
 }
 </script>

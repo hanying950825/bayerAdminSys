@@ -12,7 +12,7 @@
         <el-button
           v-for="(item, index) in btns"
           :key="index"
-          @click.native.prevent="item.click"
+          @click.native.prevent="item.title=='删除'? handleDelete(scope.row) : item.title=='编辑' ? handleClick(scope.row) : handleLook(scope.row)"
           type="text"
           size="small">
           {{item.title}}
@@ -54,7 +54,15 @@ export default {
     onChange (page) {
       this.$emit('on-page', page)
     },
-
+    handleDelete (row) {
+      this.$emit('on-delete', row)
+    },
+    handleClick (row) {
+      this.$emit('on-click', row)
+    },
+    handleLook (row) {
+      this.$emit('on-look', row)
+    },
     onAddList () {
       this.$emit('on-add')
     }
