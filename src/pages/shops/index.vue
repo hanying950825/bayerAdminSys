@@ -18,12 +18,11 @@
       @on-page="onChangePage"
       @on-add="onAddShops"
       @on-delete="onDeleteShops"
-      @on-click="onEditShops"
-      @on-look="onLookShops">
+      @on-click="onEditShops">
     </w-table-list>
       <!-- 新增/修改 -->
-    <el-dialog title="新增商品" :visible.sync="dialogTableVisible" class="add-shops">
-      <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px" class="demo-ruleForm" size="small">
+    <el-dialog title="新增商品" :visible.sync="dialogTableVisible">
+      <el-form :model="ruleForm" :rules="rules" status-icon ref="ruleForm" label-width="100px" class="demo-ruleForm" size="small">
         <el-form-item label="商品名称" prop="shopName">
           <el-input type="text" v-model="ruleForm.shopName" autocomplete="off"></el-input>
         </el-form-item>
@@ -36,6 +35,26 @@
         <el-form-item label="规格" prop="spec">
           <el-input type="text" v-model="ruleForm.spec" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="一级分类" prop="spec">
+          <el-select v-model="ruleForm.topCategory" placeholder="请选择" style="width: 100%">
+            <el-option
+              v-for="item in topList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="二级分类" prop="spec">
+          <el-select v-model="ruleForm.secondCategoryy" placeholder="请选择" style="width: 100%">
+            <el-option
+              v-for="item in secList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="库存" prop="stock">
           <el-input type="text" v-model="ruleForm.stock" autocomplete="off"></el-input>
         </el-form-item>
@@ -45,7 +64,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button @click="dialogTableVisible = false">重置</el-button>
       </div>
     </el-dialog>
   </div>
@@ -111,6 +130,27 @@ Vue.use(VueHtml5Editor, {
 export default {
 
   data () {
+    // 价格验证
+    const validatePrice = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入价格'))
+      } else if (!/(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/.test(value)) {
+        callback(new Error('请输入正确的价格，最多两位小数'))
+      } else {
+        callback()
+      }
+    }
+
+    const validatestock = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入库存'))
+      } else if (!/^[0-9]*[1-9][0-9]*$/.test(value)) {
+        callback(new Error('请输入正整数'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       // 搜索框显示/选项
       siftParams: [
@@ -143,8 +183,16 @@ export default {
           key: 'size'
         },
         {
-          title: '价格',
-          key: 'price'
+          title: '市场价',
+          key: 'marketPrice'
+        },
+        {
+          title: '零售价',
+          key: 'retailPrice'
+        },
+        {
+          title: '规格',
+          key: 'spec'
         },
         {
           title: '一级分类',
@@ -165,7 +213,9 @@ export default {
           index: 1,
           name: 3211,
           size: 1321,
-          price: 100,
+          marketPrice: 100,
+          retailPrice: 100,
+          spec: '台',
           topCategory: 12213,
           secondCategory: 312,
           stock: 111
@@ -174,7 +224,9 @@ export default {
           index: 1,
           name: 3211,
           size: 1321,
-          price: 100,
+          marketPrice: 100,
+          retailPrice: 100,
+          spec: '台',
           topCategory: 12213,
           secondCategory: 312,
           stock: 111
@@ -186,10 +238,45 @@ export default {
           title: '编辑'
         },
         {
-          title: '查看'
-        },
-        {
           title: '删除'
+        }
+      ],
+      // 下拉框选项/一级
+      topList: [
+        {
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }
+      ],
+      // 二级选项
+      secList: [
+        {
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
         }
       ],
       // 总条数
@@ -206,25 +293,64 @@ export default {
         shopName: '',
         marketPrice: '',
         retailPrice: '',
+        topCategory: '',
+        secondCategory: '',
         spec: '',
         stock: '',
         details: ''
+      },
+      rules: {
+        shopName: [
+          { required: true, message: '请输入商品名称', trigger: 'blur' }
+        ],
+        marketPrice: [
+          { required: true, validator: validatePrice, trigger: 'blur' }
+        ],
+        retailPrice: [
+          { required: true, validator: validatePrice, trigger: 'blur' }
+        ],
+        topCategory: [
+          { required: true, message: '请选择一级标题', trigger: 'blur' }
+        ],
+        secondCategory: [
+          { required: true, message: '请选择二级标题', trigger: 'blur' }
+        ],
+        spec: [
+          { required: true, message: '请输入规格', trigger: 'blur' }
+        ],
+        stock: [
+          { required: true, validator: validatestock, trigger: 'blur' }
+        ],
+        details: [
+          { required: true, message: '请输入商品详情', trigger: 'blur' }
+        ]
       }
     }
   },
   methods: {
-    updateData () {},
+    // 富文本编辑器内容保存
+    updateData (value) {
+      this.ruleForm.details = value
+    },
+
+    // 搜索按钮点击后，发送请求
     onSearchSubmit (opt) {
       console.log(opt)
       console.log(231)
     },
+
+    // 点击不同page切换内容
     onChangePage (opt) {
       console.log(32111)
     },
+
+    // 新增商品
     onAddShops () {
       console.log(31231)
       this.dialogTableVisible = true
     },
+
+    // 删除商品
     onDeleteShops (row) {
       console.log(row)
       this.$confirm('是否要删除该商品？', '提示', {
@@ -243,10 +369,27 @@ export default {
         })
       })
     },
+
+    // 修改商品
     onEditShops (row) {
       console.log(row)
+      this.dialogTableVisible = true
+      // 利用返回表格中的id发送数据到后台查询当前的数据
     },
-    onLookShops (row) {}
+
+    // 提交
+    submitForm (rule) {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          console.log(31232)
+        }
+      })
+    }
+  },
+  watch: {
+    dialogTableVisible () {
+      !this.dialogTableVisible && this.$refs['ruleForm'].resetFields()
+    }
   }
 }
 </script>
@@ -258,7 +401,7 @@ export default {
     padding: 10px;
     box-sizing: border-box;
   }
-  .add-shops {
-    margin-top: 5vh;
+  .el-dialog {
+    margin: 20px auto !important;
   }
 </style>
