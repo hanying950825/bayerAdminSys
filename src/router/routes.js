@@ -16,6 +16,16 @@ export const normalFirstRoutes = [
     path: '/classify',
     meta: { name: '分类管理' },
     component: resolve => require(['../pages/classify'], resolve)
+  },
+  {
+    path: '/user',
+    meta: { name: '用户管理' },
+    component: resolve => require(['../pages/user'], resolve)
+  },
+  {
+    path: '/adminUser',
+    meta: { name: '后台用户管理管理' },
+    component: resolve => require(['../pages/adminUser'], resolve)
   }
 ]
 
@@ -42,6 +52,6 @@ export const routes = [
   },
   {
     path: '*',
-    redirect: '/login'
+    redirect: '/'
   }
 ]

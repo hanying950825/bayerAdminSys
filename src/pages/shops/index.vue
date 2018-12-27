@@ -64,7 +64,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-        <el-button @click="dialogTableVisible = false">重置</el-button>
+        <el-button @click="dialogTableVisible = false">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -336,17 +336,15 @@ export default {
     // 搜索按钮点击后，发送请求
     onSearchSubmit (opt) {
       console.log(opt)
-      console.log(231)
     },
 
     // 点击不同page切换内容
     onChangePage (opt) {
-      console.log(32111)
+
     },
 
     // 新增商品
     onAddShops () {
-      console.log(31231)
       this.dialogTableVisible = true
     },
 

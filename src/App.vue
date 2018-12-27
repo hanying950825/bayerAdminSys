@@ -45,7 +45,8 @@
             <i class="el-icon-phone-outline"></i>
             <span slot="title">用户</span>
           </template>
-          <el-menu-item index="5-1">用户管理</el-menu-item>
+          <el-menu-item index="/user">用户管理</el-menu-item>
+          <el-menu-item index="/adminUser">后台账号管理</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-aside>
@@ -123,13 +124,13 @@ export default {
       ],
       rules: {
         pass: [
-          { validator: validatePass, trigger: 'blur' }
+          { required: true, validator: validatePass, trigger: 'blur' }
         ],
         newPass: [
-          { validator: validatePass, trigger: 'blur' }
+          { required: true, validator: validatePass, trigger: 'blur' }
         ],
         checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
+          { required: true, validator: validatePass2, trigger: 'blur' }
         ]
       }
     }

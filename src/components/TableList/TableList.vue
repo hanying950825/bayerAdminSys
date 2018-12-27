@@ -5,14 +5,14 @@
       <el-button size="small" type="primary" @click="onAddList" class="add-page" style="float: right" v-if="onAdd">新增</el-button>
     </div>
     <el-table border :data="datas">
-      <el-table-column v-for="(item, index) in columns" :prop="item.key" :label="item.title" :key="index">
+      <el-table-column v-for="(item, index) in columns" :prop="item.key" :label="item.title" :key="index" :width="item.width">
       </el-table-column>
-      <el-table-column prop="operation" label="操作" v-if="isShowOperation">
+      <el-table-column prop="operation" label="操作" v-if="isShowOperation" :width="150">
         <template slot-scope="scope">
         <el-button
           v-for="(item, index) in btns"
           :key="index"
-          @click.native.prevent="item.title=='删除'? handleDelete(scope.row) : item.title=='编辑' ? handleClick(scope.row) : handleLook(scope.row)"
+          @click.native.prevent="item.title=='删除' ? handleDelete(scope.row) : item.title=='编辑' ? handleClick(scope.row) : handleLook(scope.row)"
           type="text"
           size="small">
           {{item.title}}
