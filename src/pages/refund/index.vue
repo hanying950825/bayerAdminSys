@@ -18,13 +18,6 @@
       @on-page="onChangePage"
       @on-look="onLook">
     </w-table-list>
-    <!-- 处理退货退款 -->
-    <el-dialog title="处理" :visible.sync="dialogFormVisible">
-
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -90,7 +83,7 @@ export default {
         {
           title: '退款原因',
           key: 'refundReason',
-          width: 70
+          width: 80
         },
         {
           title: '状态',
@@ -141,7 +134,6 @@ export default {
       totalPage: 10,
       // 是否显示model
       dialogFormVisible: false,
-      orderDetail: {},
       // 页面相关传输后台数据
       oParams: {
         pageSize: 10,
@@ -161,8 +153,57 @@ export default {
     },
 
     onLook (row) {
-      this.dialogFormVisible = true
-      this.orderDetail = row
+      console.log(row)
+      if (row.status === '待处理') {
+        this.$confirm('是否同意该退货退款请求?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '已同意!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '不同意'
+          })
+        })
+      } else if (row.status === '待发货') {
+        this.$prompt('请输入物流单号', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^[A-Za-z0-9]+$/,
+          inputErrorMessage: '物流单号格式不正确'
+        }).then(({ value }) => {
+          this.$message({
+            type: 'success',
+            message: '你的物流单号是: ' + value
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          })
+        })
+      } else if (row.status === '待退款') {
+        this.$confirm('是否同意退款到对方微信账户?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '已同意!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '不同意'
+          })
+        })
+      }
     }
   }
 }

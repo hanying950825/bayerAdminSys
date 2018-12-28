@@ -12,9 +12,11 @@
       :thead="thead"
       :total="totalPage"
       :current="oParams.pageNo"
-      :isShowOperation="false"
+      :isShowOperation="true"
+      :btns="abtns"
       :onAdd="false"
-      @on-page="onChangePage">
+      @on-page="onChangePage"
+      @on-delete="onDelete">
     </w-table-list>
   </div>
 </template>
@@ -86,6 +88,11 @@ export default {
       ],
       // 总条数
       totalPage: 10,
+      abtns: [
+        {
+          title: '删除'
+        }
+      ],
       // 页面相关传输后台数据
       oParams: {
         pageSize: 10,
@@ -103,6 +110,25 @@ export default {
     // 点击不同page切换内容
     onChangePage (opt) {
       console.log(32111)
+    },
+
+    // 删除推荐
+    onDelete (row) {
+      this.$confirm('是否要删除该商品？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }

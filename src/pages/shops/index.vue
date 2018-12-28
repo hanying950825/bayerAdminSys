@@ -42,10 +42,13 @@
           <el-radio v-model="ruleForm.hotSale" label="1">是</el-radio>
           <el-radio v-model="ruleForm.hotSale" label="2">否</el-radio>
         </el-form-item>
+        <el-form-item label="单位" prop="size">
+          <el-input type="text" v-model="ruleForm.size" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="规格" prop="spec">
           <el-input type="text" v-model="ruleForm.spec" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="一级分类" prop="spec">
+        <el-form-item label="一级分类" prop="topCategory">
           <el-select v-model="ruleForm.topCategory" placeholder="请选择" style="width: 100%">
             <el-option
               v-for="item in topList"
@@ -55,7 +58,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="二级分类" prop="spec">
+        <el-form-item label="二级分类" prop="secondCategoryy">
           <el-select v-model="ruleForm.secondCategoryy" placeholder="请选择" style="width: 100%">
             <el-option
               v-for="item in secList"
@@ -69,7 +72,7 @@
           <el-input type="text" v-model="ruleForm.stock" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="详情" prop="details">
-          <vue-html5-editor :content="ruleForm.details" @change="updateData" :height="200"></vue-html5-editor>
+          <vue-html5-editor :content="ruleForm.details" @change="updateData" :height="160"></vue-html5-editor>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -218,8 +221,12 @@ export default {
           key: 'name'
         },
         {
-          title: '规格',
+          title: '单位',
           key: 'size'
+        },
+        {
+          title: '规格',
+          key: 'spec'
         },
         {
           title: '市场价',
@@ -263,6 +270,7 @@ export default {
           index: 1,
           name: 3211,
           size: '台',
+          spec: '绿色',
           marketPrice: 100,
           retailPrice: 100,
           topCategory: 12213,
@@ -275,6 +283,7 @@ export default {
           index: 1,
           name: 3211,
           size: '台',
+          spec: '绿色',
           marketPrice: 100,
           retailPrice: 100,
           topCategory: 12213,
@@ -366,6 +375,7 @@ export default {
         secondCategory: '',
         recommend: null,
         hotSale: null,
+        size: '',
         spec: '',
         stock: '',
         details: ''
@@ -391,6 +401,9 @@ export default {
         ],
         secondCategory: [
           { required: true, message: '请选择二级标题', trigger: 'blur' }
+        ],
+        size: [
+          { required: true, message: '请输入单位', trigger: 'blur' }
         ],
         spec: [
           { required: true, message: '请输入规格', trigger: 'blur' }

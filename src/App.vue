@@ -38,7 +38,7 @@
           </template>
           <el-menu-item index="/order">订单管理</el-menu-item>
           <el-menu-item index="/refund">退款退货</el-menu-item>
-          <el-menu-item index="4-3">发货管理</el-menu-item>
+          <el-menu-item index="/delivery">发货管理</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
           <template slot="title">

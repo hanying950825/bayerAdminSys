@@ -28,6 +28,11 @@ export const normalFirstRoutes = [
     component: resolve => require(['../pages/refund'], resolve)
   },
   {
+    path: '/delivery',
+    meta: { name: '发货管理' },
+    component: resolve => require(['../pages/delivery'], resolve)
+  },
+  {
     path: '/recommend',
     meta: { name: '推荐管理' },
     component: resolve => require(['../pages/recommend'], resolve)
