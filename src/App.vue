@@ -28,16 +28,16 @@
             <i class="el-icon-mobile-phone"></i>
             <span slot="title">推荐</span>
           </template>
-          <el-menu-item index="3-1">推荐管理</el-menu-item>
-          <el-menu-item index="3-2">热销管理</el-menu-item>
+          <el-menu-item index="/recommend">推荐管理</el-menu-item>
+          <el-menu-item index="/hotSale">热销管理</el-menu-item>
         </el-submenu>
         <el-submenu index="5">
           <template slot="title">
             <i class="el-icon-tickets"></i>
             <span slot="title">订单</span>
           </template>
-          <el-menu-item index="4-1">订单管理</el-menu-item>
-          <el-menu-item index="4-2">退款退货</el-menu-item>
+          <el-menu-item index="/order">订单管理</el-menu-item>
+          <el-menu-item index="/refund">退款退货</el-menu-item>
           <el-menu-item index="4-3">发货管理</el-menu-item>
         </el-submenu>
         <el-submenu index="6">

@@ -18,13 +18,33 @@ export const normalFirstRoutes = [
     component: resolve => require(['../pages/classify'], resolve)
   },
   {
+    path: '/order',
+    meta: { name: '订单管理' },
+    component: resolve => require(['../pages/order'], resolve)
+  },
+  {
+    path: '/refund',
+    meta: { name: '退款退货' },
+    component: resolve => require(['../pages/refund'], resolve)
+  },
+  {
+    path: '/recommend',
+    meta: { name: '推荐管理' },
+    component: resolve => require(['../pages/recommend'], resolve)
+  },
+  {
+    path: '/hotSale',
+    meta: { name: '热销管理' },
+    component: resolve => require(['../pages/hotSale'], resolve)
+  },
+  {
     path: '/user',
     meta: { name: '用户管理' },
     component: resolve => require(['../pages/user'], resolve)
   },
   {
     path: '/adminUser',
-    meta: { name: '后台用户管理管理' },
+    meta: { name: '后台用户管理' },
     component: resolve => require(['../pages/adminUser'], resolve)
   }
 ]

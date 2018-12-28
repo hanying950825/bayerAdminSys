@@ -106,7 +106,7 @@ export default {
       // 搜索框显示/选项
       siftParams: [
         {
-          name: 'name',
+          name: 'phone',
           value: '',
           filterType: 'number',
           inputLength: 30,
@@ -197,11 +197,6 @@ export default {
     }
   },
   methods: {
-    // 富文本编辑器内容保存
-    updateData (value) {
-      this.ruleForm.details = value
-    },
-
     // 搜索按钮点击后，发送请求
     onSearchSubmit (opt) {
       console.log(opt)

@@ -18,10 +18,12 @@
       @on-page="onChangePage"
       @on-add="onAddShops"
       @on-delete="onDeleteShops"
-      @on-click="onEditShops">
+      @on-click="onEditShops"
+      @on-look="onBannerPic">
     </w-table-list>
-      <!-- 新增/修改 -->
-    <el-dialog title="新增商品" :visible.sync="dialogTableVisible">
+
+    <!-- 新增/修改 -->
+    <el-dialog title="新增商品" :visible.sync="dialogTableVisible" class="add-shops">
       <el-form :model="ruleForm" :rules="rules" status-icon ref="ruleForm" label-width="100px" class="demo-ruleForm" size="small">
         <el-form-item label="商品名称" prop="shopName">
           <el-input type="text" v-model="ruleForm.shopName" autocomplete="off"></el-input>
@@ -31,6 +33,14 @@
         </el-form-item>
         <el-form-item label="零售价" prop="retailPrice">
           <el-input type="text" v-model="ruleForm.retailPrice" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="设为推荐" prop="recommend">
+          <el-radio v-model="ruleForm.recommend" label="1">是</el-radio>
+          <el-radio v-model="ruleForm.recommend" label="2">否</el-radio>
+        </el-form-item>
+        <el-form-item label="设为热销" prop="hotSale">
+          <el-radio v-model="ruleForm.hotSale" label="1">是</el-radio>
+          <el-radio v-model="ruleForm.hotSale" label="2">否</el-radio>
         </el-form-item>
         <el-form-item label="规格" prop="spec">
           <el-input type="text" v-model="ruleForm.spec" autocomplete="off"></el-input>
@@ -59,13 +69,31 @@
           <el-input type="text" v-model="ruleForm.stock" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="详情" prop="details">
-          <vue-html5-editor :content="ruleForm.details" @change="updateData" :height="300"></vue-html5-editor>
+          <vue-html5-editor :content="ruleForm.details" @change="updateData" :height="200"></vue-html5-editor>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+        <el-button type="primary" @click="onSubmitForm('ruleForm')">提交</el-button>
         <el-button @click="dialogTableVisible = false">取消</el-button>
       </div>
+    </el-dialog>
+
+    <!-- 轮播图 -->
+    <el-dialog title="轮播图" :visible.sync="dialogListVisible" width="50%">
+      <p class="banner-tip" v-if="bannerTbody.length > 5">上传的图片数量不能大于五张!</p>
+      <w-table-list
+        title="轮播图列表"
+        :tbody="bannerTbody"
+        :thead="bannerThead"
+        :total="bannerTotalPage"
+        :current="params.pageNo"
+        :isShowOperation="true"
+        :btns="bannerAbtns"
+        :onAdd="true"
+        @on-add="onAddBanner"
+        @on-delete="onDeleteBanner">
+      </w-table-list>
+      <input type="file" class="file-upload" accept="image/gif,image/jpeg,image/jpg,image/png" ref="fileEl" @change="onChangeFile" />
     </el-dialog>
   </div>
 </template>
@@ -155,16 +183,27 @@ export default {
       // 搜索框显示/选项
       siftParams: [
         {
-          name: 'name',
+          name: 'shops',
           value: '',
           inputLength: 30,
           holder: '商品名称'
         }, {
-          name: 'phone',
+          name: 'time',
           type: 'datetimerange',
           value: '',
-          inputLength: 30,
           holder: '时间'
+        }
+      ],
+      // 轮播表头
+      bannerThead: [
+        {
+          title: '序号',
+          key: 'index',
+          width: 60
+        },
+        {
+          title: '图片地址',
+          key: 'url'
         }
       ],
       // 表头
@@ -191,10 +230,6 @@ export default {
           key: 'retailPrice'
         },
         {
-          title: '规格',
-          key: 'spec'
-        },
-        {
           title: '一级分类',
           key: 'topCategory'
         },
@@ -205,6 +240,21 @@ export default {
         {
           title: '库存',
           key: 'stock'
+        },
+        {
+          title: '是否推荐',
+          key: 'isRecommend'
+        },
+        {
+          title: '是否热销',
+          key: 'isHotSale'
+        }
+      ],
+      // 轮播主体内容
+      bannerTbody: [
+        {
+          index: 1,
+          url: 'http://xxxxxxxxxxx'
         }
       ],
       // 主体内容
@@ -212,30 +262,41 @@ export default {
         {
           index: 1,
           name: 3211,
-          size: 1321,
+          size: '台',
           marketPrice: 100,
           retailPrice: 100,
-          spec: '台',
           topCategory: 12213,
           secondCategory: 312,
-          stock: 111
+          stock: 111,
+          isRecommend: '是',
+          isHotSale: '是'
         },
         {
           index: 1,
           name: 3211,
-          size: 1321,
+          size: '台',
           marketPrice: 100,
           retailPrice: 100,
-          spec: '台',
           topCategory: 12213,
           secondCategory: 312,
-          stock: 111
+          stock: 111,
+          isRecommend: '是',
+          isHotSale: '是'
+        }
+      ],
+      // 轮播按钮
+      bannerAbtns: [
+        {
+          title: '删除'
         }
       ],
       // 按钮
       abtns: [
         {
           title: '编辑'
+        },
+        {
+          title: '轮播图'
         },
         {
           title: '删除'
@@ -279,12 +340,20 @@ export default {
           label: '北京烤鸭'
         }
       ],
+      // 轮播最大条数
+      bannerTotalPage: 5,
       // 总条数
       totalPage: 10,
       // 是否显示model
       dialogTableVisible: false,
+      dialogListVisible: false,
       // 页面相关传输后台数据
       oParams: {
+        pageSize: 10,
+        pageNo: 1
+      },
+      // 轮播弹窗数据
+      params: {
         pageSize: 10,
         pageNo: 1
       },
@@ -295,6 +364,8 @@ export default {
         retailPrice: '',
         topCategory: '',
         secondCategory: '',
+        recommend: null,
+        hotSale: null,
         spec: '',
         stock: '',
         details: ''
@@ -308,6 +379,12 @@ export default {
         ],
         retailPrice: [
           { required: true, validator: validatePrice, trigger: 'blur' }
+        ],
+        recommend: [
+          { required: true, message: '请选择是否推荐', trigger: 'blur' }
+        ],
+        hotSale: [
+          { required: true, message: '请选择是否热销', trigger: 'blur' }
         ],
         topCategory: [
           { required: true, message: '请选择一级标题', trigger: 'blur' }
@@ -375,12 +452,53 @@ export default {
       // 利用返回表格中的id发送数据到后台查询当前的数据
     },
 
+    onAddBanner () {
+      if (this.bannerTbody.length < 5) {
+        this.$refs.fileEl.click()
+      } else {
+        this.$message.error('已经达到五张啦,不能再上传啦!')
+      }
+    },
+
+    onBannerPic (row) {
+      // this.params.id
+      this.dialogListVisible = true
+    },
+
+    onChangeFile (ev) {
+      const oFile = ev.target.files[0]
+      if (!oFile) {
+        this.$message.error('请选择需要上传的图片')
+        return false
+      }
+      // this._uploadFileToOSS(oFile)
+    },
+
     // 提交
-    submitForm (rule) {
+    onSubmitForm (rule) {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           console.log(31232)
         }
+      })
+    },
+
+    // 删除轮播
+    onDeleteBanner (row) {
+      this.$confirm('是否要删除该商品？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     }
   },
@@ -399,7 +517,18 @@ export default {
     padding: 10px;
     box-sizing: border-box;
   }
-  .el-dialog {
+  .add-shops .el-dialog {
     margin: 20px auto !important;
+  }
+  .add-shops .el-dialog__body {
+    padding: 20px;
+  }
+  .banner-tip {
+    color: red;
+    padding: 10px;
+  }
+  .file-upload {
+    margin-left: -9999px;
+    opacity: 0;
   }
 </style>
